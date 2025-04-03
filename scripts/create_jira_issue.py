@@ -1,12 +1,17 @@
+import os
 import requests
 from requests.auth import HTTPBasicAuth
 import json
 
+# Load Jira API token securely from environment variable
+api_token = os.getenv("JIRA_API_TOKEN")
+if not api_token:
+    raise EnvironmentError("⚠️ Environment variable JIRA_API_TOKEN is not set.")
+
 # Jira account details
 email = "vardoshvili.ioseb@gmail.com"
-api_token = "ATATT3xFfGF0_HTWaKiG7JjKil9XjgSPyHfq9QIh01MrqoWDJ0KFaF79QfdqEbhYLEI26SZv0sQ2WXPRPHB6k8RCHJb6rmmL13R5I8J7viac7NQEAyl60I4wpl36AmvIMxmTq_1z2TDgDp1cOfJ1XtYwwo1nS5iUPcRUk8IOiOpYW4XhycA7g68=98ED0ED5"
 jira_domain = "ivr-testing.atlassian.net"
-project_key = "CPG"  # Double-checked from your new project board
+project_key = "CPG"
 
 # Issue details
 summary = "Test Issue from New Jira Site"
@@ -24,9 +29,7 @@ headers = {
 # Payload
 payload = json.dumps({
     "fields": {
-        "project": {
-            "key": project_key
-        },
+        "project": {"key": project_key},
         "summary": summary,
         "description": {
             "type": "doc",
@@ -34,21 +37,13 @@ payload = json.dumps({
             "content": [
                 {
                     "type": "paragraph",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": description
-                        }
-                    ]
+                    "content": [{"type": "text", "text": description}]
                 }
             ]
         },
-        "issuetype": {
-            "name": "Task"
-        }
+        "issuetype": {"name": "Task"}
     }
 })
-
 
 # Authentication
 auth = HTTPBasicAuth(email, api_token)

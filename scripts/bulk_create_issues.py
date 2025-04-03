@@ -1,10 +1,15 @@
+import os
 import requests
 from requests.auth import HTTPBasicAuth
 import json
 
-# Jira credentials and project details
+# Load token securely from environment variable
+api_token = os.getenv("JIRA_API_TOKEN")
+if not api_token:
+    raise EnvironmentError("⚠️ Environment variable JIRA_API_TOKEN is not set.")
+
+# Jira credentials and project info
 email = "vardoshvili.ioseb@gmail.com"
-api_token = "ATATT3xFfGF0_HTWaKiG7JjKil9XjgSPyHfq9QIh01MrqoWDJ0KFaF79QfdqEbhYLEI26SZv0sQ2WXPRPHB6k8RCHJb6rmmL13R5I8J7viac7NQEAyl60I4wpl36AmvIMxmTq_1z2TDgDp1cOfJ1XtYwwo1nS5iUPcRUk8IOiOpYW4XhycA7g68=98ED0ED5"
 jira_domain = "ivr-testing.atlassian.net"
 project_key = "CPG"
 url = f"https://{jira_domain}/rest/api/3/issue"
@@ -48,7 +53,7 @@ issues = [
     }
 ]
 
-# Create issues via API
+# Create issues via Jira REST API
 for issue in issues:
     payload = json.dumps({
         "fields": {
@@ -60,18 +65,17 @@ for issue in issues:
                 "content": [
                     {
                         "type": "paragraph",
-                        "content": [
-                            {"type": "text", "text": issue["description"]}
-                        ]
+                        "content": [{"type": "text", "text": issue["description"]}]
                     }
                 ]
             },
-            "issuetype": {"name": "Task"},
+            "issuetype": {"name": issue["issuetype"]},
             "labels": issue["labels"] + [issue["issuetype"].lower()]
         }
     })
 
     response = requests.post(url, data=payload, headers=headers, auth=auth)
+
     if response.status_code == 201:
         print(f"✅ Created: {issue['summary']} → {response.json()['key']}")
     else:
