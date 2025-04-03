@@ -41,7 +41,10 @@ payload = json.dumps({
                 }
             ]
         },
-        "issuetype": {"name": "Task"}
+        "issuetype": {"name": "Task"},
+        "assignee": {
+            "id": "712020:ee71cb31-3db9-4262-a4b9-98d3a760ab75"
+        }
     }
 })
 

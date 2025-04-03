@@ -3,15 +3,18 @@ import requests
 from requests.auth import HTTPBasicAuth
 import json
 
-# Load token securely from environment variable
+# Load Jira API token securely
 api_token = os.getenv("JIRA_API_TOKEN")
 if not api_token:
     raise EnvironmentError("⚠️ Environment variable JIRA_API_TOKEN is not set.")
 
-# Jira credentials and project info
+# Jira credentials and details
 email = "vardoshvili.ioseb@gmail.com"
 jira_domain = "ivr-testing.atlassian.net"
 project_key = "CPG"
+assignee_account_id = "712020:ee71cb31-3db9-4262-a4b9-98d3a760ab75"
+
+# Endpoint & headers
 url = f"https://{jira_domain}/rest/api/3/issue"
 headers = {
     "Accept": "application/json",
@@ -19,7 +22,7 @@ headers = {
 }
 auth = HTTPBasicAuth(email, api_token)
 
-# List of issues to create
+# Issues to create
 issues = [
     {
         "summary": "DTMF Input Not Recognized",
@@ -53,7 +56,7 @@ issues = [
     }
 ]
 
-# Create issues via Jira REST API
+# Create issues via API
 for issue in issues:
     payload = json.dumps({
         "fields": {
@@ -69,13 +72,13 @@ for issue in issues:
                     }
                 ]
             },
-            "issuetype": {"name": issue["issuetype"]},
-            "labels": issue["labels"] + [issue["issuetype"].lower()]
+            "issuetype": {"name": "Task"},  # Standardize for all
+            "labels": issue["labels"] + [issue["issuetype"].lower()],
+            "assignee": {"id": assignee_account_id}
         }
     })
 
     response = requests.post(url, data=payload, headers=headers, auth=auth)
-
     if response.status_code == 201:
         print(f"✅ Created: {issue['summary']} → {response.json()['key']}")
     else:
