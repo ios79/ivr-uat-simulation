@@ -1,0 +1,19 @@
+{
+    "greeting": "Welcome to Syncritech. For Sales, press 1. For Support, press 2. To speak to an operator, press 0.",
+    "options": {
+      "1": {
+        "message": "You selected Sales. Please wait while we connect you.",
+        "action": "transfer_to_sales"
+      },
+      "2": {
+        "message": "You selected Support. Please describe your issue after the beep.",
+        "action": "record_message"
+      },
+      "0": {
+        "message": "Connecting you to the operator.",
+        "action": "transfer_to_operator"
+      }
+    },
+    "invalid_option": "Sorry, that is not a valid selection. Please try again."
+  }
+  

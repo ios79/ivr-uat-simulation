@@ -1,0 +1,8 @@
+ 
+[2025-04-02 21:59:58] User selected: 1 - transfer_to_sales
+[2025-04-02 22:00:06] User selected: 2 - record_message
+[2025-04-02 22:00:16] User selected: 0 - transfer_to_operator
+[2025-04-02 22:07:48] User selected: 9 - invalid_selection
+[2025-04-02 22:12:58] User selected: 1 - transfer_to_sales
+[2025-04-02 22:13:03] User selected: 8 - invalid_selection
+[2025-04-02 22:15:52] User selected: 1 - transfer_to_sales
